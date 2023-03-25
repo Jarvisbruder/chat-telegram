@@ -4,7 +4,8 @@ import { Bot, session, InputFile } from "https://deno.land/x/grammy/mod.ts";
 
 // https://grammy.dev/plugins/chat-members.html#storing-chat-members
 // https://github.com/cyclic-software/starter-telegram-bot/blob/main/src/bot.ts
-
+// https://sarafian.github.io/low-code/2020/03/24/create-private-telegram-chatbot.html
+// /setjoingroups --> @EdgyJarvisBot --> Disable --> make it private
 
 const bot = new Bot(Deno.env.get("BOT_TOKEN" || ""));
 
@@ -30,14 +31,62 @@ bot.command('stats', async (ctx) => {
   })
 
 
-bot.command("start", (ctx) => ctx.reply(`Welcome ${ctx.from?.username} from ${context.geo.country.name}!`));
+bot.command("start", (ctx) => ctx.reply(`Welcome ${ctx.from?.username}!`));
 bot.command('help', async (ctx) => {
     await ctx.reply('Here are some helpful commands you can use:');
+    await ctx.reply('/info - check your status and the chatid')
     await ctx.reply('/imagine + description - to generate an image'); 
     await ctx.reply('/start - Start the bot');
     await ctx.reply('/stats - stats');
-    await ctx.reply('/help - Show this message');
+    await ctx.reply('/help - Show this message');      
+})
+
+
+
+/*   const chatId = '-1001932974907';  // chatid.group: -1932974907 (check url on top)
+  const member = await bot.api.getChatMember(chatId, ctx.from?.username)
+ */
+
+  bot.command('info', async (ctx) => {
+    const chatId = ctx.message.chat.id;
+    const userId = ctx.message.from?.id;  //ctx.me?.id  --> me / from
+    const fName = ctx.message.from?.first_name  
+    const uName = ctx.message.from?.username
+    const lang = ctx.message.from?.language_code
+    const country = context.geo.country.name
+    const messages = ctx.session.messages
+    const tokens = ctx.session.tokens
+    try {
+      const chatMember = await bot.api.getChatMember(chatId, userId);
+      const status = chatMember.status;
+      await ctx.reply(`Status in this chat: ${status}
+         ChatId: ${chatId}
+         UserId: ${userId}
+         Names: ${fName + " / " + uName}
+         Language: ${lang}
+         Location: ${country}
+         Messages sent: ${messages}
+         Tokens left: ${tokens}
+         -
+         ${ctx.chat?.type === 'private' ??  "ME: " + ctx.me?.username  + " " + JSON.stringify(ctx)
+
+         }`); 
+             // private vs supergroup  // bot.filter( ).command('info', ctx => { 
+
+        } catch (error) {
+          console.error(error);
+          await ctx.reply(`${error}`);
+        }
   });
+
+
+
+
+
+
+
+
+
 
 bot.command('imagine', async (ctx) => {
 
@@ -62,7 +111,8 @@ bot.command('imagine', async (ctx) => {
                     new InputFile({ url: completion.data[0].url }),
                     {caption: ctx.message.text.substring(8)}
                   )
-            await ctx.deleteMessage(); // Delete the user's messag
+
+                  ctx.chat?.type === 'private' ?? await ctx.deleteMessage(); // Delete the user's messag
 
 
       } catch (error) {
@@ -71,8 +121,10 @@ bot.command('imagine', async (ctx) => {
 });
 
 
-// ! works also with the command   bot.command("imagine", async (ctx) => { (just need to change the substring number to 8)
+
+
 bot.on('message:photo', (ctx) => ctx.reply("Nice photo!"));
+
 bot.on('message:text', async (ctx) => { 
 
     if (ctx.session.tokens <= 0) {
@@ -108,30 +160,45 @@ bot.on('message:text', async (ctx) => {
           await ctx.reply(error || 'Something went wrong');
       }
  
-});
+}); 
+
+
+
+
+
+   const info = await bot.api.getMe()
+   .catch((error) => {
+    console.error(error);
+  })
 
 
 
     bot.catch(err => console.error(err))
-    bot.start();
+    bot.start(); 
 
 
-    return new Response
 
+    return new Response(JSON.stringify(info))
 
   }  
-  
 
+
+
+
+
+  //update_id":951523265, // chat.id.private:1480396981 from 6284492334 (the bot) chatid.group: -1932974907 (check url on top)
+  // https://api.telegram.org/bot<bot-token>/getUpdates?chat_id=-1932974907
+  // 1087968824 // chat.id = "-1001932974907" chat.title = "EdgyJarvisGroup"
+
+
+
+  
+// bot.use((ctx) => {ctx.reply(`${ctx.chat.id}`) });
 // bot.on('message:text', async (ctx) => { if (ctx.message.text.toLowerCase().includes('imagine')) { ...
 //ctx.reply(`${chatId} ${userId} ${userMe} ${userFrom} `); 
 //bot.filter(ctx => ctx.chat?.type === 'private').command('start', ctx =>
 //bot.on(':new_chat_members:me', ctx =>
 
-/* // Get information about the user's role and permissions (chatmembers module)
-  const chatId = ctx.chat.id;
-  const userFrom = ctx.from?.username;
-  const userId = ctx.from?.id
-  const userMe = ctx.me?.id; */
 
 
 /* const res = await context.next();
