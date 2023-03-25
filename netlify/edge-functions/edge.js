@@ -4,7 +4,7 @@ import { Bot, session, InputFile } from "https://deno.land/x/grammy/mod.ts";
 // chatmembers https://grammy.dev/plugins/chat-members.html#storing-chat-members
 
 
-const bot = new Bot(Deno.env.get(BOT_TOKEN || "")); // Deno.env.get("BOT_TOKEN") || ""
+const bot = new Bot(Deno.env.get("BOT_TOKEN" || "")); // Deno.env.get("BOT_TOKEN") || ""
 
 
 
@@ -71,7 +71,7 @@ bot.on('message:text', async (ctx) => {
         const completion = await fetch("https://api.openai.com/v1/images/generations", {
             headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${Deno.env.get(OPENAI_API_KEY || "")}`,
+            Authorization: `Bearer ${Deno.env.get("OPENAI_API_KEY" || "")}`,
             },
             method: "POST",
             body: JSON.stringify(pyloadImg),
@@ -100,7 +100,7 @@ bot.on('message:text', async (ctx) => {
                 const completion = await fetch("https://api.openai.com/v1/chat/completions", {
                     headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${Deno.env.get(OPENAI_API_KEY || "")}`,
+                    Authorization: `Bearer ${Deno.env.get("OPENAI_API_KEY" || "")}`,
                   },
                     method: "POST",
                     body: JSON.stringify(payload),
