@@ -13,7 +13,7 @@ export default async (request, context) => {
 
 
 // Collect statistics    
-bot.use(session({ initial: () => ({ messages: 1, tokens: 100}) }))
+bot.use(session({ initial: () => ({ messages: 1, tokens: 10000}) }))
 bot.on('message', async (ctx, next) => {
     ctx.session.messages++  
     // !this is not saved no a db
@@ -102,7 +102,7 @@ bot.on('message:text', async (ctx) => {
             }).then(res => res.json())
 
             ctx.session.tokens = ctx.session.tokens - completion.usage.total_tokens
-            ctx.reply(`${completion.choices[0].message.content} ## ${ctx.session.tokens} tokens left` );
+            ctx.reply(`${completion.choices[0].message.content} #${ctx.session.tokens} tokens left` );
 
         } catch (error) {
           await ctx.reply(error || 'Something went wrong');
