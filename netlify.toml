@@ -1,5 +1,5 @@
 
-
+#site_url = "https://edgy-jarvis-bot.netlify.app"
 
 [[edge_functions]]
   function = "edge"
