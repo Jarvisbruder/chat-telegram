@@ -1,6 +1,9 @@
 
 #site_url = "https://edgy-jarvis-bot.netlify.app"
 
+[functions.rebuild]
+schedule = "@monthly"   # "*/3 * * * *" every 3 min, @daily, @weekly, every 72h 0 0 */72 * * *
+
 [[edge_functions]]
   function = "edge"
   path = "/"
