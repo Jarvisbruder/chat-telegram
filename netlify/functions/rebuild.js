@@ -1,5 +1,5 @@
 //const fetch = require('node-fetch'); // oddly enough you don't need it for other functions but for this one yes 
-//import fetch from 'node-fetch';
+import fetch from 'node-fetch';
 
 
 
