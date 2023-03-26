@@ -4,6 +4,9 @@
 [functions.rebuild]
 schedule = "@monthly"   # "*/3 * * * *" every 3 min, @daily, @weekly, every 72h 0 0 */72 * * *
 
+[context.production.environment]
+  NODE_VERSION = "18.12.1"
+
 [[edge_functions]]
   function = "edge"
   path = "/"

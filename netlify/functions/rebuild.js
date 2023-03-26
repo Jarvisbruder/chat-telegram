@@ -1,4 +1,6 @@
 //const fetch = require('node-fetch'); // oddly enough you don't need it for other functions but for this one yes 
+//import fetch from 'node-fetch';
+
 
 
 // this format if you want to control the schedule at the netlify.toml level :
