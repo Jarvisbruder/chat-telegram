@@ -1,8 +1,8 @@
 
 #site_url = "https://edgy-jarvis-bot.netlify.app"
 
-[functions.rebuild]
-schedule = "*/3 * * * *"   # */3 * * * * every 3 min, @daily, @monthly, @weekly, every 72h: 0 0 */72 * * *
+#[functions.rebuild]
+#schedule = "*/3 * * * *"   # */3 * * * * every 3 min, @daily, @monthly, @weekly, every 72h: 0 0 */72 * * *
 
 [context.production.environment]
   NODE_VERSION = "18.12.1"
