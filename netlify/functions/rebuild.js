@@ -1,4 +1,4 @@
-const fetch = require('node-fetch'); // oddly enough you don't need it for other functions but for this one yes 
+//const fetch = require('node-fetch'); // oddly enough you don't need it for other functions but for this one yes 
 //import fetch from 'node-fetch';
 
 
@@ -7,14 +7,14 @@ const fetch = require('node-fetch'); // oddly enough you don't need it for other
 
 exports.handler = async function(event, context) {
 
-   /*  await fetch("https://edgy-jarvis-bot.netlify.app", {  // needed to keep the server up if >24h ??
+   await fetch("https://edgy-jarvis-bot.netlify.app", {  // needed to keep the server up if >24h ??
         method: "POST", 
-    }); */
+    });
 
   
-    await fetch("https://api.netlify.com/build_hooks/64207d88f7a7885f7126a521", {  // to relaunch a build 
+    /*  await fetch("https://api.netlify.com/build_hooks/64207d88f7a7885f7126a521", {  // to relaunch a build 
         method: "POST", 
-    });  
+    });   */
 
     return {
         statusCode: 200,
